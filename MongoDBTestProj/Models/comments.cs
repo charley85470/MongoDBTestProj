@@ -15,9 +15,9 @@ namespace MongoDBTestProj.Models
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() == typeof(CommentModel))
+            if (obj.GetType() == typeof(comments))
             {
-                var o = obj as CommentModel;
+                var o = obj as comments;
                 var bl = !(name ?? "").Equals(o.name) ? false :
                          !(comment ?? "").Equals(o.comment) ? false :
                          !(type ?? "").Equals(o.type) ? false : true;
