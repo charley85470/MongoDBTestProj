@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MongoDBTestProj.Models.CommentModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Comment</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.comment</td>
+                        <td>@item._id.CreationTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <button type="submit" formaction="@Url.Action("Update", "Default", new { _id = item._id })" form="submitForm">修改</button>
+                            @Html.ActionLink("刪除", "Delete", "Default", new { _id = item._id }, new { @class = "btn" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form id="submitForm" method="post">
+            <span>Name:</span><input type="text" name="name" />
+            <span>Comment:</span><input type="text" name="comment" /><button type="submit" formaction="@Url.Action("Insert","Default")">送出</button>
+        </form>
+    </div>
+</body>
+</html>
