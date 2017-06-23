@@ -23,6 +23,34 @@ namespace MongoDBTestProj.Controllers
             }
         }
 
+        public ActionResult Query(comments model)
+        {
+            using (BlogDBContext _db = new BlogDBContext())
+            {
+                var comments = _db.Collection<comments>();
+
+                #region Query Parameters
+                var filterBuilder = Builders<comments>.Filter;
+                var filter = filterBuilder.Empty;
+                if (model != null)
+                {
+                    if (!string.IsNullOrEmpty(model.name))
+                    {
+                        filter = filter & filterBuilder.Eq(x => x.name, model.name);
+                    }
+                    if (!string.IsNullOrEmpty(model.comment))
+                    {
+                        filter = filter & filterBuilder.Eq(x => x.comment, model.comment);
+                    }
+                }
+                #endregion
+
+                var result = comments.Find(filter).ToList();
+
+                return View("Index", result);
+            }
+        }
+
         [HttpPost]
         public ActionResult Insert(comments model)
         {
