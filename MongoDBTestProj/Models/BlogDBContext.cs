@@ -33,6 +33,7 @@ namespace MongoDBTestProj.Models
         #region IDisposable Support
         public void Dispose()
         {
+            // Mongo DB 不須關閉connection，它會自動關閉，查詢的時候會自動開啟
         }
         #endregion
     }
