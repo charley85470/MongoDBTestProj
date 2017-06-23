@@ -14,16 +14,21 @@ namespace MongoDBTestProj.Controllers
         // GET: Default
         public ActionResult Index()
         {
-            // Connection
-            var client = new MongoClient("mongodb://localhost:27017");
-            // Get DB
-            var db = client.GetDatabase("blog");
-            // Get Collection (Table)
-            // You can use BsonDocument or Your Model Object
-            var collection = db.GetCollection<CommentModel>("comments");
-            // To Find Data
-            var data = collection.Find(x => true).ToList();
-            return View(data);
+            using (BlogDBContext _db = new BlogDBContext())
+            {
+                var comments = _db.Collection<comments>();
+                var result = comments.Find(x => true).ToList();
+
+                var data = new List<CommentModel>();
+                result.ForEach(x => data.Add(new CommentModel {
+                    _id = x._id,
+                    name = x.name,
+                    type = x.type,
+                    comment = x.comment
+                }));
+
+                return View("Index", data);
+            }
         }
 
         [HttpPost]
